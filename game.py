@@ -3,7 +3,6 @@ import random
 import math
 import sys
 import os
-import multiprocessing
 
 # Iniciar pygame
 pygame.init()
@@ -53,7 +52,7 @@ pygame.mixer.music.play(-1)
 clock = pygame.time.Clock()
 
 # Posición inicial del jugador
-playerX = 370
+playerX = 250
 playerY = 470
 playerX_change = 0
 
@@ -142,16 +141,16 @@ def gameloop():
                     playerX_change = 5
                 if event.key == pygame.K_SPACE:
                     if bullet_state == "ready":
-                        bulletX = playerX
+                        bulletX = playerX + 80
                         fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_UP:
                     playerX_change = 0
 
         playerX += playerX_change
-        if playerX <= 0:
-            playerX = 0
-        elif playerX >= 736:
-            playerX = 736
+        if playerX <= -20:
+            playerX = -20
+        elif playerX >= 603:
+            playerX = 603
         
         for i in range(no_of_enemies):
             if enemyY[i] > 440:
@@ -188,6 +187,4 @@ def gameloop():
 
         clock.tick(120)
 
-# Iniciar el proceso principal
-if __name__ == "__main__":
-    gameloop()
+gameloop()
