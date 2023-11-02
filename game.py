@@ -63,22 +63,29 @@ enemyX = []
 enemyY = []
 enemyX_change = []
 enemyY_change = []
+velocity = 1.0015
 
 for i in range(no_of_enemies):
     enemy1 = resource_path("assets/images/enemigo1.png")
     enemyimg.append(pygame.image.load(enemy1))
 
+    enemy2 = resource_path("assets/images/enemigo2.png")
+    enemyimg.append(pygame.image.load(enemy2))
+
+    enemy3 = resource_path("assets/images/enemigo3.png")
+    enemyimg.append(pygame.image.load(enemy3))
+
     enemyX.append(random.randint(0, 736))
     enemyY.append(random.randint(0, 150))
 
-    enemyX_change.append(5)
+    enemyX_change.append(velocity)
     enemyY_change.append(20)
 
 # Inicializar variables para la bala
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 10
+bulletY_change = 26
 bullet_state = "ready"
 
 # Inicializar la puntuación en 0
@@ -120,10 +127,14 @@ def game_over_text():
 
 # Función principal del juego
 def gameloop():
-    global playerX, playerX_change, bulletX, bulletY, collision, bullet_state, score, in_game
+    global playerX, playerX_change, bulletX, bulletY, collision, bullet_state, score, in_game, actual_velc
+
+    actual_velc = 1
 
     in_game = True
     while in_game:
+        if(actual_velc <= 20):
+            actual_velc *= velocity
         # Manejar eventos
         screen.fill((0, 0, 0))
         screen.blit(background, (0, 0))
@@ -159,10 +170,10 @@ def gameloop():
                 game_over_text()
             enemyX[i] += enemyX_change[i]
             if enemyX[i] <= 0:
-                enemyX_change[i] = 5
+                enemyX_change[i] = actual_velc 
                 enemyY[i] += enemyY_change[i]
             elif enemyX[i] >= 736:
-                enemyX_change[i] = -5
+                enemyX_change[i] = -actual_velc
                 enemyY[i] += enemyY_change[i]
 
             collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
