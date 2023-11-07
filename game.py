@@ -69,7 +69,7 @@ def gameloop():
     enemyY = []
     enemyX_change = []
     enemyY_change = []
-    speed = 1.0015
+    speedIncrement = 1.0015
 
     for i in range(no_of_enemies):
         enemy1 = resource_path("assets/images/enemigo1.png")
@@ -84,7 +84,7 @@ def gameloop():
         enemyX.append(random.randint(0, 736))
         enemyY.append(random.randint(0, 150))
 
-        enemyX_change.append(speed)
+        enemyX_change.append(speedIncrement)
         enemyY_change.append(20)
 
     # Inicializar variables para la bala
@@ -141,7 +141,7 @@ def gameloop():
         actual_time = time.time()
         time_in_progress = actual_time - init_time
         if(actual_speed <= 20 and time_in_progress >= seconds_for_increment):
-            actual_speed *= speed
+            actual_speed *= speedIncrement
         # Manejar eventos
         screen.fill((0, 0, 0))
         screen.blit(background, (0, 0))
