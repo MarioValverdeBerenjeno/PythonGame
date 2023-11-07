@@ -53,6 +53,8 @@ def gameloop():
     asset_font = resource_path("assets/fonts/comicbd.ttf")
     font = pygame.font.Font(asset_font, 32)
 
+    pause_text = font.render("Pause - Press 'P' to continue", True, (255, 255, 255))
+
     # Establecer título e icono de la ventana
     pygame.display.set_caption("Space Destroyer")
     pygame.display.set_icon(icon)
@@ -144,6 +146,7 @@ def gameloop():
     seconds_for_increment = 20 
     init_time = time.time()
     time_img = 0.1
+    pause = False
 
     in_game = True
     while in_game:
@@ -175,47 +178,52 @@ def gameloop():
                         fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_UP:
                     playerX_change = 0
+                if event.key == pygame.K_p:
+                    pause = not pause
 
-        playerX += playerX_change
-        if playerX <= -20:
-            playerX = -20
-        elif playerX >= 603:
-            playerX = 603
+        if not pause:
+            playerX += playerX_change
+            if playerX <= -20:
+                playerX = -20
+            elif playerX >= 603:
+                playerX = 603
         
-        for i in range(no_of_enemies):
-            if enemyY[i] > 440:
-                for j in range(no_of_enemies):
-                    enemyY[j] = 2000
-                game_over_text()
-            enemyX[i] += enemyX_change[i]
-            if enemyX[i] <= 0:
-                enemyX_change[i] = actual_speed 
-                enemyY[i] += enemyY_change[i]
-            elif enemyX[i] >= 736:
-                enemyX_change[i] = -actual_speed
-                enemyY[i] += enemyY_change[i]
+            for i in range(no_of_enemies):
+                if enemyY[i] > 440:
+                    for j in range(no_of_enemies):
+                        enemyY[j] = 2000
+                    game_over_text()
+                enemyX[i] += enemyX_change[i]
+                if enemyX[i] <= 0:
+                    enemyX_change[i] = actual_speed 
+                    enemyY[i] += enemyY_change[i]
+                elif enemyX[i] >= 736:
+                    enemyX_change[i] = -actual_speed
+                    enemyY[i] += enemyY_change[i]
 
-            collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
-            if collision:
+                collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
+                if collision:
+                    bulletY = 454
+                    bullet_state = "ready"
+                    score += 1
+                    enemyX[i] = random.randint(0, 736)
+                    enemyY[i] = random.randint(0, 150)
+                enemy(enemyX[i], enemyY[i], i)
+            if bulletY < 0:
                 bulletY = 454
                 bullet_state = "ready"
-                score += 1
-                enemyX[i] = random.randint(0, 736)
-                enemyY[i] = random.randint(0, 150)
-            enemy(enemyX[i], enemyY[i], i)
-        if bulletY < 0:
-            bulletY = 454
-            bullet_state = "ready"
-        if bullet_state == "fire":
-            fire_bullet(bulletX, bulletY)
-            bulletY -= bulletY_change
+            if bullet_state == "fire":
+                fire_bullet(bulletX, bulletY)
+                bulletY -= bulletY_change
         
-        player(playerX, playerY)
-        show_score()
+            player(playerX, playerY)
+            show_score()
 
-        # Si se alcanza el último fotograma, vuelve al primero
-        if index >= len(img_bg_list):
-            index = 0
+            # Si se alcanza el último fotograma, vuelve al primero
+            if index >= len(img_bg_list):
+                index = 0
+        else:
+            screen.blit(pause_text, (0,0))
 
         pygame.display.update()
 
