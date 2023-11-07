@@ -26,8 +26,14 @@ def gameloop():
         return os.path.join(base_path, relative_path)
 
     # Cargar imágenes, sonidos y fuentes
-    asset_background = resource_path("assets/images/fondo_espacio_pixel.png")
-    background = pygame.image.load(asset_background)
+    asset_background = resource_path("assets/images/AnimatedBackground/")
+    img_bg_list = []
+    # Recorre los archivos en el directorio y carga las imágenes
+    for img in os.listdir(asset_background):
+        if img.endswith((".gif")):
+            complete_path = os.path.join(asset_background, img)
+            image = pygame.image.load(complete_path)
+            img_bg_list.append(image)
 
     asset_icon = resource_path("assets/images/enemigo1.png")
     icon = pygame.image.load(asset_icon)
@@ -97,6 +103,9 @@ def gameloop():
     # Inicializar la puntuación en 0
     score = 0
 
+    # Inicializar el indice de las imagenes
+    index = 0
+
     # Mostrar puntuación
     def show_score():
         score_value = font.render("SCORE " + str(score), True, (255, 255, 255))
@@ -132,7 +141,6 @@ def gameloop():
         screen.blit(over_text, text_rect)
 
     actual_speed = 5
-    counter = 0
     seconds_for_increment = 20 
     init_time = time.time()
 
@@ -142,9 +150,10 @@ def gameloop():
         time_in_progress = actual_time - init_time
         if(actual_speed <= 20 and time_in_progress >= seconds_for_increment):
             actual_speed *= speedIncrement
+
         # Manejar eventos
         screen.fill((0, 0, 0))
-        screen.blit(background, (0, 0))
+        screen.blit(img_bg_list[index], (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -200,6 +209,13 @@ def gameloop():
         
         player(playerX, playerY)
         show_score()
+
+        # Avanza al siguiente fotograma
+        index += 1
+
+        # Si se alcanza el último fotograma, vuelve al primero
+        if index >= len(img_bg_list):
+            index = 0
 
         pygame.display.update()
 
