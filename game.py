@@ -143,6 +143,7 @@ def gameloop():
     actual_speed = 5
     seconds_for_increment = 20 
     init_time = time.time()
+    time_img = 0.1
 
     in_game = True
     while in_game:
@@ -150,6 +151,8 @@ def gameloop():
         time_in_progress = actual_time - init_time
         if(actual_speed <= 20 and time_in_progress >= seconds_for_increment):
             actual_speed *= speedIncrement
+
+        index = int(time_in_progress / time_img) % len(img_bg_list)
 
         # Manejar eventos
         screen.fill((0, 0, 0))
@@ -209,9 +212,6 @@ def gameloop():
         
         player(playerX, playerY)
         show_score()
-
-        # Avanza al siguiente fotograma
-        index += 1
 
         # Si se alcanza el último fotograma, vuelve al primero
         if index >= len(img_bg_list):
