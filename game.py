@@ -3,6 +3,7 @@ import random
 import math
 import sys
 import os
+import time
 
 # Iniciar pygame
 
@@ -47,7 +48,7 @@ def gameloop():
     font = pygame.font.Font(asset_font, 32)
 
     # Establecer título e icono de la ventana
-    pygame.display.set_caption("Space Invader")
+    pygame.display.set_caption("Space Destroyer")
     pygame.display.set_icon(icon)
 
     # Reproducir música de fondo en bucle
@@ -68,7 +69,7 @@ def gameloop():
     enemyY = []
     enemyX_change = []
     enemyY_change = []
-    velocity = 1.0015
+    speed = 1.0015
 
     for i in range(no_of_enemies):
         enemy1 = resource_path("assets/images/enemigo1.png")
@@ -83,7 +84,7 @@ def gameloop():
         enemyX.append(random.randint(0, 736))
         enemyY.append(random.randint(0, 150))
 
-        enemyX_change.append(velocity)
+        enemyX_change.append(speed)
         enemyY_change.append(20)
 
     # Inicializar variables para la bala
@@ -130,16 +131,17 @@ def gameloop():
         text_rect = over_text.get_rect(center=(int(screen_width / 2), int(screen_height / 2)))
         screen.blit(over_text, text_rect)
 
-    # Función principal del juego
-
-    
-
-    actual_velc = 1
+    actual_speed = 5
+    counter = 0
+    seconds_for_increment = 20 
+    init_time = time.time()
 
     in_game = True
     while in_game:
-        if(actual_velc <= 20):
-            actual_velc *= velocity
+        actual_time = time.time()
+        time_in_progress = actual_time - init_time
+        if(actual_speed <= 20 and time_in_progress >= seconds_for_increment):
+            actual_speed *= speed
         # Manejar eventos
         screen.fill((0, 0, 0))
         screen.blit(background, (0, 0))
@@ -175,10 +177,10 @@ def gameloop():
                 game_over_text()
             enemyX[i] += enemyX_change[i]
             if enemyX[i] <= 0:
-                enemyX_change[i] = actual_velc 
+                enemyX_change[i] = actual_speed 
                 enemyY[i] += enemyY_change[i]
             elif enemyX[i] >= 736:
-                enemyX_change[i] = -actual_velc
+                enemyX_change[i] = -actual_speed
                 enemyY[i] += enemyY_change[i]
 
             collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
