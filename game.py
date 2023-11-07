@@ -98,7 +98,6 @@ def gameloop():
     # Inicializar variables para la bala
     bulletX = 0
     bulletY = 480
-    bulletX_change = 0
     bulletY_change = 26
     bullet_state = "ready"
 
