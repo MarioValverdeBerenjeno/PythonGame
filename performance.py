@@ -1,7 +1,6 @@
 import psutil
 import tkinter as tk
 
-
 def get_memory_usage():
     memory = psutil.virtual_memory()
     return f"Memoria en uso: {memory.percent}%"
@@ -22,8 +21,15 @@ def crear_ventana_mod():
     root_width = 300
     root_height = 100
 
+    # Obtener el ancho de la pantalla
+    screen_width = root.winfo_screenwidth()
+
+    # Calcular la posición en la esquina superior derecha
+    x_position = screen_width - root_width
+    y_position = 0  # 0 para la parte superior
+
     # Establecer las dimensiones y posición de la ventana
-    root.geometry(f"{root_width}x{root_height}+{1175}+{100}")
+    root.geometry(f"{root_width}x{root_height}+{x_position}+{y_position}")
     
     memory_label = tk.Label(root, text="", font=("Courier", 12))
     memory_label.pack()
