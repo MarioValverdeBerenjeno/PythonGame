@@ -89,6 +89,9 @@ def gameloop():
         enemy3 = resource_path("assets/images/enemigo3.png")
         enemyimg.append(pygame.image.load(enemy3))
 
+        enemy4 = resource_path("assets/images/enemigo4.png")
+        enemyimg.append(pygame.image.load(enemy4))
+
         enemyX.append(random.randint(0, 736))
         enemyY.append(random.randint(0, 150))
 
