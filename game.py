@@ -154,7 +154,7 @@ def gameloop():
     while in_game:
         actual_time = time.time()
         time_in_progress = actual_time - init_time
-        if(actual_speed <= 20 and time_in_progress >= seconds_for_increment):
+        if(actual_speed <= 15 and time_in_progress >= seconds_for_increment):
             actual_speed *= speedIncrement
 
         index = int(time_in_progress / time_img) % len(img_bg_list)
