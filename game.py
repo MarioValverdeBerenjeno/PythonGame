@@ -38,7 +38,7 @@ def gameloop():
     asset_icon = resource_path("assets/images/enemigo1.png")
     icon = pygame.image.load(asset_icon)
 
-    asset_sound = resource_path("assets/sounds/background_music3.mp3")
+    asset_sound = resource_path("assets/sounds/background_music.mp3")
     pygame.mixer.music.load(asset_sound)
 
     asset_playerimg = resource_path("assets/images/nave.png")
